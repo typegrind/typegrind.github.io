@@ -94,10 +94,7 @@ Known limitations
      #define DECL_AN_INT(name) int* name = new int(0);
    ```
 
- * Delete loggers might call the pointer expression twice - once for logging, once for deleting it. It has to be extracted into a variable before use.
  * Include directives / linker settings aren't modified by typegrind. The projects using it should include the desired logger, and link to it's library if it has one.
- * Instrumenting system includes is problematic - an overlay should be used for files outside the project scope
-
 
 Future work
 ---
