@@ -37,7 +37,7 @@ Usage
 
 Typegrind is a Clang Tool, and uses the same parameters as other, builtin tools like `clang-check`.
 
-For more details, see the TODO.
+For more details, see [how it works](/doc/how-it-works.html).
 
 
 Example
