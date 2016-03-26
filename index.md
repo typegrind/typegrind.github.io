@@ -19,17 +19,7 @@ Typegrind consists of two main components:
 Building
 ---
 
-Typegrind can be built as part of the clang build process. This is made easier using the [repo tool](https://source.android.com/source/using-repo.html).
-
-To checkout and build everything execute:
-
-```bash
-repo init -u "https://github.com/typegrind/repo.git"
-repo sync
-cd build
-cmake ../
-cmake --build .
-```
+See [Building](/doc/building.html).
 
 Usage
 ---
