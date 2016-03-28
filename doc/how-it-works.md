@@ -11,8 +11,23 @@ To use typegrind in your project, you have to add one of it's loggers first. (TO
 
 This is usually done in two steps:
 
- * Adding a logger header as the first included file to every translation unit, as Typegrind currently won't do this automatically. When using precompiled headers, including the logger in the PCH is enough.
+ * Adding a logger header as the first included file to every translation uni
  * Adding the logger's static library to the project. Linkers are implemented as static libraries, because header only loggers would cause incorrect logs, infinite loops or compilation errors -- all because of the include order.
+
+#### Adding the logger header
+
+Projects using precompiled headers should add their logger include as the first include statement into their PCH.
+
+Projects without precompiled headers can either manually add the logger include into every source file, or use the prepend\_include setting in typegrind's configuration:
+
+```json
+{
+  "prepend_include": "typegrind/logger/demo_cout.h",
+  // ...
+}
+```
+
+Note: using this option with precompiled headers will break the build, because the additional include will be added before the PCH!
 
 Copy your project to another location
 ---
