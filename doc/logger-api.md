@@ -107,16 +107,28 @@ Parameters:
  * locationStr: location of the allocation (filename:lineNumber) as a string
  * deleteExpression: the delete call
 
+#### `TYPEGRIND_LOG_METHOD_INITIALIZER`
+
+This macro is used for constructor initializer parameters, it's added for every parameter for every initializer.
+
+Parameters:
+
+ * targetName: Name of the watched method. Since this is a constructor, it is usually in the form of `ClassName::ClassName`
+ * locationStr: location of the allocation (filename:lineNumber) as a string
+ * customName: name set by the user in typegrind.json. By default this is an empty string
+ * flags: set by the user in typegrind.json. Can be used by the logger or postprocessing tools
+ * initExpr: the original parameter expression 
+
 #### `TYPEGRIND_LOG_METHOD_ENTER`
 
 This macro is used for watched methods, it's added as the first statement into matched bodies.
 
 Parameters:
 
- * targetName: Name of the watched method. Since this is a constructor, it is usually in the form of `ClassName::ClassName`
+ * targetName: Name of the watched method.
  * locationStr: location of the allocation (filename:lineNumber) as a string
- * customName: name set by the user in typegrind.json. By default this is an empty string.
- * flags: set by the user in typegrind.json. Can be used by the logger or postprocessing tools.
+ * customName: name set by the user in typegrind.json. By default this is an empty string
+ * flags: set by the user in typegrind.json. Can be used by the logger or postprocessing tools
 
 #### `TYPEGRIND_DEMANGLE`
 
@@ -140,3 +152,23 @@ A simple implementation working in every usecase is to use a marker class and an
 #### Method watches
 
 Typegrind won't place multiple watches into one method, making a statically named local variable the easiest implementation of tracking the start and end of a method's call.
+
+#### Initializer watches
+
+Initialzer watches are needed because otherwise calls in the initializers would be executed before the method watch in the constructor. They should be minimalistic, only setting 
+basic markers to ensure resulting logs will be associated with the correct object.
+
+Note that for this context, it's not guaranteed that the expression results are copiable or movable. To make sure every program compiles with this macro, loggers should use
+the conditional operator with a marker type and a bool conversational operator. For example:
+
+```cpp
+  Cl::Cl()
+  // : a(_a)
+  // : a(TYPEGRIND_LOG_METHOD_INITIALIZER("Cl::Cl", "...", "", 0, (_a))
+  : a(logger_marker("Cl::Cl", "...", "", 0) ? (_a) : (_a))
+  {}
+```
+
+Anything logged between the first initializer entry and the desturction of the method marker should be treated as part of the constructor call -- except when another marker is
+set in a nested scope.
+
