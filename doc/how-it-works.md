@@ -67,6 +67,19 @@ Execute `clang-typegrind` for every translation unit in the project:
 clang-typegrind source_file.cpp
 ```
 
+#### Processing every file in a compilation database
+
+There is no ready script for this in the repositories yet, but it's a simple script in many languages. For example, in ruby:
+
+```ruby
+require 'json'
+JSON.parse(File.read('compile_commands.json')).each do |entry|
+  p entry['file']
+  puts "====="
+  puts `clang-typegrind #{entry['file']} 2>&1`
+end
+```
+
 Modify the include path of the transformed project
 ---
 
