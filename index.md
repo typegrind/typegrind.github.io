@@ -84,17 +84,15 @@ Known limitations
      #define DECL_AN_INT(name) int* name = new int(0);
    ```
 
- * Include directives / linker settings aren't modified by typegrind. The projects using it should include the desired logger, and link to it's library if it has one.
+ * Linker settings aren't modified by typegrind. The projects using it should link to it's library if it has one.
 
 Future work
 ---
 
  * Solve the above limitations
- * Implement the planned macros in the API (see API docs for details - some of them require more research)
  * Improve the usage process (call clang with an in-memory VFS automatically)
  * Create production ready standard loggers
  * Create a user friendly logger frontend
- * Make it possible to build Typegrind without building clang from sources first
 
 
 Credits
