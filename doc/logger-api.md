@@ -117,7 +117,7 @@ Parameters:
 
 #### `TYPEGRIND_LOG_FUNCTION_ENTER`
 
-This macro is used for watched methods, it's added as the first statement into matched bodies.
+This macro is used for watched functions, it's added as the first statement into matched bodies.
 
 Parameters:
 
@@ -128,7 +128,7 @@ Parameters:
 
 #### `TYPEGRIND_LOG_FUNCTION_AUTO_ENTER`
 
-This macro is used for some of the non watched methods -- decided by clang-typegrind --, to add the ability of manually updating a partial call tree.
+This macro is used for some of the non watched functions -- decided by clang-typegrind --, to add the ability of manually updating a partial call tree.
 
 Parameters:
 
@@ -153,7 +153,7 @@ Parametrs:
 New and delete handlers can access the address of the allocated or freed memory area as the return value of the expression. Since the expression's type is always a pointer,
 it's safe to assume it can be copied by a function, or used by any two argument operator.
 
-#### Method watches
+#### Function watches
 
 Typegrind won't place multiple watches into one method, making a statically named local variable the easiest implementation of tracking the start and end of a method's call.
 
