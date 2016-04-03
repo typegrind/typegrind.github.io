@@ -36,11 +36,12 @@ Example
 The original source code:
 
 ```cpp
-#include <typegrind/log_to_cout.hpp>
+#include <typegrind/logger/demo_cout.hpp>
 #include <iostream>
 
 int main() {
-  int* a = new int(3);
+  typedef int myint;
+  myint* a = new myint(3);
   std::cout << *a << std::endl;
   delete a;
   return 0;
@@ -50,27 +51,29 @@ int main() {
 Is transformed to:
 
 ```cpp
-#include <typegrind/log_to_cout.hpp>
+#include <typegrind/logger/demo_cout.hpp>
 #include <iostream>
 
 int main() {
-  int* a = TYPEGRIND_LOG_ALLOC("int*", "example.cpp:6", new int(3), sizeof(int));
+  typedef int myint;
+  myint* a = TYPEGRIND_LOG_NEW("example.cpp:7", "myint", "int", sizeof(int), myint(3));
   std::cout << *a << std::endl;
-  TYPEGRIND_LOG_DEALLOC(a, "example.cpp:8", delete a);
+  delete TYPEGRIND_LOG_DELETE("example.cpp:9", "myint", "int", a);
   return 0;
 }
 ```
 
-Which is transformed by a logger, for example by the demo cout logger to:
+Which is transformed by a logger, for example by the demo\_cout logger to:
 
 ```cpp
 #include <typegrind/log_to_cout.hpp>
 #include <iostream>
 
 int main() {
-  int* a = typegrind::log_cout::alloc("int*", "example.cpp:6", (new int(3)), sizeof(int));
+  typedef int myint;
+  int* a = (typegrind::logger::entry_alloc{"myint", "int", "example.cpp:7", sizeof(myint), 0, nullptr} * (new myint(3)))
   std::cout << *a << std::endl;
-  typegrind::log_cout::dealloc(a, "example.cpp:8"); (delete a);
+  delete (typegrind::logger::entry_free{"myint", "int", "example.cpp:9", nullptr} * (a)));
   return 0;
 }
 ```
