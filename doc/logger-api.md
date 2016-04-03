@@ -115,16 +115,25 @@ Parameters:
  * canonicalTypeStr: the canonical name of the allocated type as a string - for example, if the type is a typedef, typeStr will contain the typeDef name, while canonicalTypeStr contain int
  * deleteExpression: the delete expression, for example X
 
-#### `TYPEGRIND_LOG_METHOD_ENTER`
+#### `TYPEGRIND_LOG_FUNCTION_ENTER`
 
 This macro is used for watched methods, it's added as the first statement into matched bodies.
 
 Parameters:
 
- * targetName: Name of the watched method.
  * locationStr: location of the allocation (filename:lineNumber) as a string
+ * targetName: Name of the watched method.
  * customName: name set by the user in typegrind.json. By default this is an empty string
  * flags: set by the user in typegrind.json. Can be used by the logger or postprocessing tools
+
+#### `TYPEGRIND_LOG_FUNCTION_AUTO_ENTER`
+
+This macro is used for some of the non watched methods -- decided by clang-typegrind --, to add the ability of manually updating a partial call tree.
+
+Parameters:
+
+ * locationStr: location of the allocation (filename:lineNumber) as a string
+ * targetName: Name of the watched method.
 
 #### `TYPEGRIND_DEMANGLE`
 
